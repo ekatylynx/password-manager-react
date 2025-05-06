@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '@/components/Modal';
 import {
@@ -8,56 +8,75 @@ import {
   StepUploadFile,
   StepUploadPassword
 } from '@/components/WizardSetup';
+
+// Типы
+import { FormData, WizardFormProps, WizardStep } from '@/types';
+
 import './index.scss';
-// TODO: Навести порядок и прикрутить типы
-interface WizardStep {
-  title: string;
-  component: React.ReactElement;
-}
 
-interface WizardFormProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (data: Record<string, any>) => void;
-  initialData?: Record<string, any>;
-}
+// eslint-disable-next-line react/display-name
+const WizardForm: React.FC<WizardFormProps> = React.memo(
+  // eslint-disable-next-line react/prop-types
+  ({ isOpen, onClose, onSubmit, initialData = {} }) => {
+    const navigate = useNavigate();
+    const [currentStep, setCurrentStep] = useState(0);
+    const [formData, setFormData] = useState<FormData>(initialData);
 
-const WizardForm: React.FC<WizardFormProps> = ({
-  isOpen,
-  onClose,
-  onSubmit,
-  initialData = {}
-}) => {
-  const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<Record<string, any>>(initialData);
+    const updateFormData = useCallback((data: Partial<FormData>) => {
+      setFormData((prev) => {
+        const newData = { ...prev, ...data };
+        return newData;
+      });
+    }, []);
 
-  const getSteps = (): WizardStep[] => {
+  const getSteps = useCallback((): WizardStep[] => {
     const baseSteps: WizardStep[] = [
-      { title: 'Вы здесь впервые?', component: <Step1Welcome /> }
+      {
+        title: 'Вы здесь впервые?',
+        component: Step1Welcome,
+      },
     ];
 
     if (formData.step1?.choice === 'create') {
       return [
         ...baseSteps,
-        { title: 'Введите пароль', component: <StepCreatePassword /> },
-        { title: 'Сохраните файл', component: <StepCreateSaveFile /> }
+        {
+          title: 'Введите пароль',
+          component: StepCreatePassword,
+        },
+        {
+          title: 'Сохраните файл',
+          component: StepCreateSaveFile,
+        },
       ];
     }
     if (formData.step1?.choice === 'upload') {
       return [
         ...baseSteps,
-        { title: 'Загрузите файл', component: <StepUploadFile /> },
-        { title: 'Введите пароль', component: <StepUploadPassword /> }
+        {
+          title: 'Загрузите файл',
+          component: StepUploadFile,
+        },
+        {
+          title: 'Введите пароль',
+          component: StepUploadPassword,
+        },
       ];
     }
     return baseSteps;
-  };
+  }, [formData]);
 
-  const steps = React.useMemo(() => getSteps(), [formData.step1?.choice]);
+  const steps = useMemo(() => getSteps(), [getSteps]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (currentStep < steps.length - 1) {
+      // Проверка файла перед переходом
+      if (formData.step1?.choice === 'upload' && currentStep === 1) {
+        if (!formData.stepUploadFile?.file) {
+          console.error('Файл отсутствует при переходе к StepUploadPassword');
+          return;
+        }
+      }
       setCurrentStep(currentStep + 1);
     } else {
       onSubmit(formData);
@@ -65,23 +84,15 @@ const WizardForm: React.FC<WizardFormProps> = ({
       navigate('/');
       onClose();
     }
-  };
+  }, [currentStep, steps.length, onSubmit, formData, navigate, onClose]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
-  };
+  }, [currentStep]);
 
-  const updateFormData = (data: Record<string, any>) => {
-    setFormData((prev) => ({ ...prev, ...data }));
-  };
-
-  const isFirstStep = currentStep === 0;
-  const isLastStep = currentStep === steps.length - 1;
-
-  // Валидация шага
-  const isStepValid = () => {
+  const isStepValid = useCallback(() => {
     if (currentStep === 0) return !!formData.step1?.choice;
     if (formData.step1?.choice === 'create') {
       if (currentStep === 1) return !!formData.stepCreatePassword?.password;
@@ -92,7 +103,12 @@ const WizardForm: React.FC<WizardFormProps> = ({
       if (currentStep === 2) return !!formData.stepUploadPassword?.success;
     }
     return false;
-  };
+  }, [currentStep, formData]);
+
+  const isFirstStep = currentStep === 0;
+  const isLastStep = currentStep === steps.length - 1;
+
+  const CurrentStepComponent = steps[currentStep].component;
 
   return (
     <Modal
@@ -119,10 +135,7 @@ const WizardForm: React.FC<WizardFormProps> = ({
           ))}
         </div>
         <div className="wizard-content">
-          {React.cloneElement(steps[currentStep].component, {
-            formData,
-            updateFormData
-          })}
+          <CurrentStepComponent formData={formData} updateFormData={updateFormData} />
         </div>
         <div className="wizard-buttons">
           {!isFirstStep && (
@@ -141,6 +154,7 @@ const WizardForm: React.FC<WizardFormProps> = ({
       </div>
     </Modal>
   );
-};
+  }
+);
 
 export default WizardForm;
