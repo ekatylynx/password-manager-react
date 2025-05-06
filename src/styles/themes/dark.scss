@@ -1,0 +1,16 @@
+[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --text-color: #f0f0f0;
+  --primary-color: #535bf2;
+  --border-color: #514D65;
+  // ... другие переменные
+  --bg-color-modal: transparent;
+  --modal-border: 2px solid #514D65;
+  --subtitle-info-muted: #646464;
+  --btn-disabled: transparent;
+  --btn-wizard: #232036;
+  --btn-hovered: #1b1929;
+  --btn-submit: black;
+  --btn-submit-hovered: rgba(0, 0, 0, 0.3);
+  --input-bg: #1A1825;
+}

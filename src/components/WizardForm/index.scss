@@ -1,0 +1,174 @@
+// TODO: разобрать этот файл и навести тут порядок
+
+.button-next {
+  margin-top: 20px;
+  height: 50px;
+  background-color: black;
+  color: white;
+  padding: 0 30px;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+}
+
+.wizard-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.wizard-progress {
+  display: flex;
+  // align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.wizard-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  position: relative;
+  text-align: center;
+  color: #6b7280; /* Серый цвет для неактивных шагов */
+  transition: color 0.3s ease;
+}
+
+.wizard-step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #e5e7eb; /* Серый фон для неактивных */
+  color: #6b7280;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  z-index: 2;
+}
+
+.wizard-step-title {
+  font-size: 14px;
+  min-width: 145px;
+  line-height: 1.2;
+}
+
+/* Стили для активного шага */
+.wizard-step.active {
+  color: #1d4ed8; /* Синий цвет для активного шага */
+}
+
+.wizard-step.active .wizard-step-number {
+  background-color: #1d4ed8;
+  color: #ffffff;
+}
+
+/* Стили для завершённых шагов */
+.wizard-step.completed {
+  color: #15803d; /* Зелёный цвет для завершённых шагов */
+}
+
+.wizard-step.completed .wizard-step-number {
+  background-color: #15803d;
+  color: #ffffff;
+}
+
+/* Линии между шагами */
+.wizard-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 16px; /* Половина высоты кружка (32px / 2) */
+  left: 50%;
+  width: 100%; /* Ширина между кружками */
+  height: 4px;
+  background-color: #e5e7eb; /* Серый цвет для неактивных линий */
+  z-index: 1;
+  transition: background-color 0.3s ease;
+}
+
+.wizard-step.completed:not(:last-child)::after,
+.wizard-step.active:not(:last-child)::after {
+  background-color: #15803d; /* Зелёный вцет для завершённых линий */
+}
+
+/* Стили для кнопок */
+.wizard-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.wizard-button {
+  padding: 10px 20px;
+  border: 2px solid var(--border-color);
+  border-radius: $border-radius;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: var(--btn-wizard);
+  color: var(--text-color);
+}
+
+.wizard-button.back {
+  background-color: #6b7280;
+  color: #ffffff;
+}
+
+.wizard-button.back:hover {
+  background-color: #4b5563;
+}
+
+.wizard-button.next {
+  background-color: var(--btn-submit);
+  color: #ffffff;
+}
+
+.wizard-button.next:hover {
+  background-color: var(--btn-submit-hovered);
+}
+
+.wizard-button.next:disabled {
+  background-color: var(--btn-disabled);
+  cursor: not-allowed;
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+  .wizard-progress {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .wizard-step {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+    width: 100%;
+  }
+
+  .wizard-step:not(:last-child)::after {
+    display: none; /* Скрываем линии на мобильных */
+  }
+
+  .wizard-step-title {
+    max-width: none;
+    font-size: 16px;
+  }
+
+  .wizard-step-number {
+    margin-right: 10px;
+  }
+}
+
+.btn-selected {
+  border: 3px solid var(--border-color);
+  background-color: var(--btn-hovered);
+}

@@ -1,0 +1,16 @@
+.toggle-theme-btn {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border-radius: $border-radius;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  border: 1px solid $color_border;
+
+  &:hover {
+    background-color: black;
+  }
+}

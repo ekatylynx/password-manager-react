@@ -1,0 +1,15 @@
+:root, [data-theme="light"] {
+  --bg-color: #ffffff;
+  --text-color: #222222;
+  --primary-color: #646cff;
+  --border-color: #a4a4a4;
+  // ... другие переменные
+  --bg-color-modal: rgba(0, 0, 0, 0.5);
+  --modal-border: 2px solid #a4a4a4;
+  --btn-disabled: #d1d5db;
+  --btn-wizard: transparent;
+  --btn-hovered: #f0f0f0;
+  --btn-submit: black;
+  --btn-submit-hovered: rgba(0, 0, 0, 0.3);
+  --input-bg: transparent;
+}

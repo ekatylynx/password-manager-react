@@ -1,0 +1,100 @@
+// @use '@/styles/variables.scss' as *;
+
+.file-wrapper {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  width: 100%;
+  max-width: 300px;
+  border-radius: $border-radius;
+  // font-family: $font-stack;
+  position: relative;
+
+  &.primary {
+    .file-button {
+      font-family: Inter, sans-serif;
+      background-color: $primary_accent_color;
+      color: $color_lilac_font_btn;
+      font-weight: 500;
+      line-height: 26px;
+      border: none;
+
+      span {
+        font-family: Inter, sans-serif;
+        font-weight: 500;
+      }
+
+      &:hover {
+        background-color: #ac89ec;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+      }
+    }
+  }
+
+  &.error {
+    .file-button {
+      border-color: #dc3545;
+      color: #dc3545;
+      background-color: #fef2f2;
+
+      &:hover {
+        background-color: #fee2e2;
+        border-color: #b91c1c;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.3);
+      }
+    }
+  }
+}
+
+.file-input {
+  display: none;
+}
+
+.file-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  gap: 8px;
+
+  .file-icon {
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background-color: #f3f4f6;
+    border-color: #9ca3af;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    border-color: #3b82f6;
+  }
+
+  &:disabled {
+    background-color: #e5e7eb;
+    color: #6b7280;
+    cursor: not-allowed;
+    border-color: #d1d5db;
+  }
+}

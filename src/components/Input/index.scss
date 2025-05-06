@@ -1,0 +1,10 @@
+.input {
+  color: red;
+}
+
+// Стиль для инпута загрузчика файлов
+.input[type=file] {
+  display: flex;
+  height: 36px;
+  border: 1px solid red;
+}

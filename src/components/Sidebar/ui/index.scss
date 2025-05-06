@@ -1,0 +1,43 @@
+.sidebar {
+  height: 100svh;
+  width: 258px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: fixed;
+  border-right: 1px solid var(--border-color);
+  background: var(--bg-color);
+  z-index: 100;
+  transition: background .3s, color .3s;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.sidebar-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.sidebar-nav {
+  flex: 1; /* Для занятия всего доступного пространства */
+  overflow-y: auto; /* Скролл только для nav */
+}
+
+.sidebar-nav li {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-nav a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.sidebar-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+}
