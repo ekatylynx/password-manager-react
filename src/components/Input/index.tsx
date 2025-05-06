@@ -7,7 +7,7 @@ const Input: React.FC<InputProps> = ({
   onChange,
   value,
   inputType,
-  className = "",
+  // className = "",
   variant = '',
   ...props
 }) => {
